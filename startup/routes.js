@@ -2,9 +2,13 @@ const express = require("express");
 const uploader = require("../app/uploader/routes");
 const cors = require("cors");
 
-module.exports = function (app) {
+function setupRoutes(app) {
   app.use("/upload", express.static("upload"));
   app.use(express.json());
   app.use(cors());
-  app.use("/uploader", uploader);
+  app.use("/api/uploader", uploader);
+};
+
+module.exports = {
+    setupRoutes
 };

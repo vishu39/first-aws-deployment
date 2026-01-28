@@ -1,20 +1,14 @@
 const express = require("express");
 const app = express();
-require("dotenv").config();
-const cors = require('cors')
-
+// require("dotenv").config();
+const ENV = process.env.NODE_ENV || "development";
+require('dotenv').config({ path: __dirname + `/env/.env.${ENV || 'production'}` })
 require("./startup/db")();
-require("./startup/routes")(app);
 
-app.use(express.json());
-app.use(cors('*'));
+const { setupRoutes } = require('./startup/routes')
+setupRoutes(app)
 
-// Home Route
-app.get("/", (req, res) => {
-  res.send("Node.js App Running on AWS 🚀");
-});
-
-const PORT = 8800;
-app.listen(PORT, () => {
+const PORT = process.env.PORT;
+app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -1,20 +1,29 @@
+const {Uploader} = require('./model')
 
-// Upload to S3
 async function uploadFileOnS3(req, res, next) {
-  const params = {
-    Bucket: process.env.AWS_BUCKET_NAME,
-    Key: `file-${Date.now()}.txt`,
-    Body: "Hello from Node App",
-  };
-
   try {
-    const result = await s3.upload(params).promise();
-    res.json(result);
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const doc = await Uploader.create({
+      file: req?.file || {}
+    });
+
+    doc.save()
+
+    res.status(201).json({
+      success: true,
+      data: doc
+    });
+
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({
+      error: err.message
+    });
   }
 }
 
 module.exports = {
-    uploadFileOnS3,
+  uploadFileOnS3,
 };
