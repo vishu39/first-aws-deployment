@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
 // require("dotenv").config();
-const ENV = process.env.NODE_ENV || "development";
-require('dotenv').config({ path: __dirname + `/env/.env.${ENV || 'production'}` })
+require('dotenv').config({ path: __dirname + `/env/.env.${process.env.NODE_ENV || 'production'}` })
+
 require("./startup/db")();
 
 const { setupRoutes } = require('./startup/routes')
