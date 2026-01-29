@@ -5,6 +5,10 @@ require('dotenv').config({ path: __dirname + `/env/.env.${process.env.NODE_ENV |
 
 require("./startup/db")();
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 const { setupRoutes } = require('./startup/routes')
 setupRoutes(app)
 
